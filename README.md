@@ -206,10 +206,12 @@ Este laboratorio demuestra el flujo fundamental de funcionamiento de una platafo
 
 ---
 
-<p align="center">
+---
 
-🛡️ Proyecto de laboratorio SIEM
+<div align="center">
+
+🛡️ **Proyecto de Laboratorio SIEM**
 📊 Monitorización de seguridad • Análisis de logs • Detección de amenazas
-🚀 Desarrollado con ELK Stack
+🚀 Desarrollado con **ELK Stack**
 
-</p>
+</div>
