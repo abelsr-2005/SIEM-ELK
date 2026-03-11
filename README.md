@@ -199,19 +199,18 @@ Este laboratorio demuestra el flujo fundamental de funcionamiento de una platafo
 
 ---
 
-## 👨‍💻 Autor
-
-**Abel Sánchez Ramos**
-🎓 *Curso de Especialización en Ciberseguridad*
-
----
-
----
 
 <div align="center">
 
-🛡️ **Proyecto de Laboratorio SIEM**
-📊 Monitorización de seguridad • Análisis de logs • Detección de amenazas
-🚀 Desarrollado con **ELK Stack**
+## 👨‍💻 Autor
+
+**Abel Sánchez Ramos**  
+🎓 Curso de Especialización en Ciberseguridad  
+
+---
+
+🛡️ SIEM Lab Project  
+📊 Security Monitoring • Log Analysis • Threat Detection  
+🚀 Built with ELK Stack
 
 </div>
