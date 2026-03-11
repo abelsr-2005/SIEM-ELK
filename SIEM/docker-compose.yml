@@ -1,0 +1,84 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - siem_elk_network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - siem_elk_network
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    container_name: logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - siem_elk_network
+
+  victim-nginx:
+    image: nginx:stable-alpine
+    container_name: victim_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/htpasswd:/etc/nginx/htpasswd:ro
+      - nginx_logs:/var/log/nginx
+    command: >
+      sh -c "rm -f /var/log/nginx/access.log /var/log/nginx/error.log &&
+      touch /var/log/nginx/access.log /var/log/nginx/error.log &&
+      nginx -g 'daemon off;'"
+    networks:
+      - siem_elk_network
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.12.0
+    container_name: filebeat
+    user: root
+    command: filebeat -e --strict.perms=false
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - nginx_logs:/var/log/nginx:ro
+    depends_on:
+      - logstash
+      - victim-nginx
+    networks:
+      - siem_elk_network
+
+  attacker:
+    image: alpine:latest
+    container_name: attacker
+    command: sh -c "apk add --no-cache nmap && tail -f /dev/null"
+    networks:
+      - siem_elk_network
+
+volumes:
+  es_data:
+  nginx_logs:
+
+networks:
+  siem_elk_network:
+    driver: bridge
