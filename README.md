@@ -202,7 +202,7 @@ Este laboratorio demuestra el flujo fundamental de funcionamiento de una platafo
 
 <div align="center">
 
-## 👨‍💻 Autor
+### 👨‍💻 Autor
 **Abel Sánchez Ramos**  
 🎓 Curso de Especialización en Ciberseguridad  
 
